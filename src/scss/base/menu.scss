@@ -1,0 +1,122 @@
+.menu {
+	// .menu__icon
+	&__icon {
+	}
+	// .menu__body
+	&__body {
+		@media (max-width: $mobile) {
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			left: -100%;
+			top: 0;
+			overflow: auto;
+			padding: toRem(70) toRem(15) toRem(15) toRem(30);
+			transition: left 0.3s;
+			background-color: #fff;
+			display: flex;
+			flex-direction: column;
+			gap: toRem(50);
+			&::before {
+				content: '';
+				position: fixed;
+				width: 100%;
+				height: toRem(70);
+				left: -100%;
+				top: 0;
+				transition: left 0.3s;
+				z-index: 2;
+			}
+			.menu-open & {
+				left: 0;
+				&::before {
+					left: 0;
+				}
+			}
+		}
+	}
+	// .menu__list
+	&__list {
+		display: flex;
+		gap: toRem(20);
+		row-gap: toRem(10);
+		align-items: center;
+		flex-wrap: wrap;
+		@media (max-width: $mobile) {
+			flex-direction: column;
+			flex-grow: 1;
+			justify-content: center;
+			gap: toRem(20);
+			opacity: 0;
+			transform: translateX(20px);
+			.menu-open & {
+				transition:
+					transform 0.5s 0.2s,
+					opacity 0.5s 0.2s;
+				opacity: 1;
+				transform: translate(0);
+			}
+		}
+	}
+	// .menu__item
+	&__item {
+		font-size: toRem(18);
+	}
+	// .menu__link
+	&__link {
+		@media (max-width: $mobile) {
+		}
+	}
+}
+
+//Burger Icon
+.icon-menu {
+	display: none;
+	@media (max-width: $mobile) {
+		display: block;
+		position: relative;
+		width: toRem(30);
+		height: toRem(18);
+		z-index: 5;
+		@media (any-hover: none) {
+			cursor: default;
+		}
+		span,
+		&::before,
+		&::after {
+			content: '';
+			transition: all 0.3s ease 0s;
+			right: 0;
+			position: absolute;
+			width: 100%;
+			height: toRem(2);
+			background-color: $mainColor;
+			border-radius: 10px;
+		}
+		&::before {
+			top: 0;
+		}
+		&::after {
+			bottom: 0;
+		}
+		span {
+			top: calc(50% - toRem(1));
+		}
+		.menu-open & {
+			span {
+				width: 0;
+			}
+			&::before,
+			&::after {
+			}
+			&::before {
+				top: calc(50% - toRem(1));
+				transform: rotate(-45deg);
+			}
+			&::after {
+				bottom: calc(50% - toRem(1));
+				transform: rotate(45deg);
+			}
+		}
+	}
+}

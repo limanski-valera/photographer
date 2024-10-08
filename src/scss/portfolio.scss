@@ -1,0 +1,98 @@
+.masonri {
+	&__container {
+	}
+	&__body {
+		position: relative;
+		width: 100%;
+		overflow: hidden;
+	}
+	&__item {
+		position: absolute;
+		overflow: hidden;
+	}
+}
+.item-masonri {
+	width: calc((100% - 40px) / 3);
+	padding-bottom: toRem(20);
+	img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transform: scale(0);
+		opacity: 0;
+		transition:
+			transform 0.3s,
+			opacity 0.3s;
+		.masonryActive & {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+	&__content {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		padding: toRem(15);
+		display: flex;
+		flex-direction: column;
+		gap: toRem(5);
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		color: #fff;
+		z-index: 2;
+		background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0.66) 100%);
+		transition: all 0.4s cubic-bezier(0.39, 0.575, 0.565, 1);
+		opacity: 0;
+		.item-masonri:hover & {
+			opacity: 1;
+		}
+	}
+	&__sub-title {
+		@media (max-width: $mobileSmall) {
+			font-size: toRem(12);
+		}
+	}
+	&__title {
+		font-size: toRem(24);
+		font-weight: 700;
+		text-transform: uppercase;
+		@media (max-width: $mobileSmall) {
+			font-size: toRem(18);
+		}
+	}
+}
+//========================================================================================================================================================
+.simple-content {
+	@include adaptiveValue('padding-top', 80, 40);
+	&:not(:last-child) {
+		@include adaptiveValue('margin-bottom', 80, 40);
+	}
+	&__container {
+		text-align: center;
+		max-width: toRem(600);
+	}
+	&__sub-title {
+		color: $darkColor;
+		text-transform: uppercase;
+		&:not(:last-child) {
+			margin-bottom: toRem(5);
+		}
+	}
+	&__title {
+		font-weight: 700;
+		text-transform: uppercase;
+		color: $darkColor;
+		@include adaptiveValue('font-size', 48, 24);
+		&:not(:last-child) {
+			margin-bottom: toRem(10);
+		}
+	}
+	&__text {
+	}
+}

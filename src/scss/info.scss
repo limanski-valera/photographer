@@ -1,0 +1,22 @@
+.info {
+	h2,
+	h3 {
+		color: $blackColor;
+		text-transform: uppercase;
+	}
+	h2 {
+		@include adaptiveValue('font-size', 36, 20);
+	}
+	h3 {
+		@include adaptiveValue('font-size', 20, 16);
+	}
+	a {
+		transition: color 0.3s;
+        color: $darkColor;
+		@media (any-hover: hover) {
+			&:hover {
+				color: $accentColor;
+			}
+		}
+	}
+}

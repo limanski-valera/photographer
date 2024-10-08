@@ -1,0 +1,162 @@
+.header {
+	padding: toRem(15) 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 100;
+	background-color: #fff;
+	&__container {
+		display: flex;
+		align-items: center;
+		gap: toRem(30);
+		max-width: none;
+	}
+	&__logo-wrapper {
+		@media (min-width: $tablet) {
+			padding: toRem(10) toRem(40) toRem(10) 0;
+		}
+		@media (max-width: $mobile) {
+			position: relative;
+			z-index: 2;
+		}
+	}
+	&__logo {
+		transition: transform 0.3s;
+		@media (any-hover: hover) {
+			&:hover {
+				transform: scale(1.05);
+			}
+		}
+		&:active {
+			transform: scale(1.05);
+		}
+		img {
+			max-width: toRem(100);
+		}
+	}
+	&__menu {
+		flex-grow: 1;
+	}
+	&__actives {
+		@media (max-width: $mobile) {
+			position: relative;
+			z-index: 2;
+		}
+	}
+}
+.actives-header {
+	display: flex;
+	gap: toRem(25);
+	align-items: center;
+	@media (max-width: $tablet) {
+		gap: toRem(10);
+	}
+	@media (max-width: $mobile) {
+		gap: toRem(25);
+	}
+	&__phone {
+		font-size: toRem(18);
+		@media (min-width: $tablet) {
+			transition: color 0.3s;
+			@media (any-hover: hover) {
+				&:hover {
+					color: $accentColor;
+				}
+			}
+		}
+		@media (max-width: $tablet) {
+			width: toRem(40);
+			height: toRem(40);
+			border-radius: 50%;
+			border: 1px solid $mainColor;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			fill: $mainColor;
+			transition:
+				fill 0.2s,
+				background-color 0.2s,
+				border-color 0.2s;
+			@media (any-hover: hover) {
+				&:hover {
+					background-color: $accentColor;
+					border-color: $accentColor;
+					fill: #fff;
+				}
+			}
+			&:active {
+				background-color: $accentColor;
+				border-color: $accentColor;
+				fill: #fff;
+			}
+		}
+	}
+	&__phone-icon {
+		@media (min-width: $tablet) {
+			display: none;
+		}
+		@media (max-width: $tablet) {
+			width: toRem(20);
+			height: toRem(20);
+		}
+	}
+	&__phone-number {
+		@media (max-width: $tablet) {
+			display: none;
+		}
+	}
+	&__society {
+	}
+}
+.society {
+	&__list {
+		display: flex;
+		gap: toRem(10);
+		align-items: center;
+		@media (max-width: $mobile) {
+			justify-content: center;
+			opacity: 0;
+			transform: translateY(20px);
+			.menu-open & {
+				opacity: 1;
+				transform: translateY(0);
+				transition:
+					opacity 0.3s 0.7s,
+					transform 0.3s 0.7s;
+			}
+		}
+	}
+	&__item {
+	}
+	&__link {
+		width: toRem(40);
+		height: toRem(40);
+		border-radius: 50%;
+		border: 1px solid $mainColor;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		fill: $mainColor;
+		transition:
+			fill 0.2s,
+			background-color 0.2s,
+			border-color 0.2s;
+		@media (any-hover: hover) {
+			&:hover {
+				background-color: $accentColor;
+				border-color: $accentColor;
+				fill: #fff;
+			}
+		}
+		&:active {
+			background-color: $accentColor;
+			border-color: $accentColor;
+			fill: #fff;
+		}
+	}
+	&__icon {
+		width: toRem(15);
+		height: toRem(15);
+	}
+}

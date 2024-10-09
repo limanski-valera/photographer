@@ -572,8 +572,7 @@ h6 {
 }
 .likes__button._liked {
   color: #8c0004;
-  fill: #8c0004;
-  pointer-events: none
+  fill: #8c0004
 }
 .likes__icon {
   width: 1.875rem;
@@ -1577,8 +1576,10 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item:not(.lg-zoomable).lg-co
     fill: #fff
   }
   .likes__button:hover {
-    color: #8c0004;
     fill: #8c0004
+  }
+  .likes__button:hover .likes__count {
+    color: #8c0004
   }
   .other-projects__link:hover::before {
     opacity: 1

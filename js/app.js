@@ -5920,19 +5920,12 @@ PERFORMANCE OF THIS SOFTWARE.
         }
         const da = new DynamicAdapt("max");
         da.init();
-        const masonryActiveClassName = "masonryActive";
-        class Masonry {
-            constructor(attr, options) {
-                this.container = attr;
-                this.children = this.container.querySelectorAll("[data-iso-item]");
-                this.childrenData = Array.from(this.children).map((child => ({
-                    child,
-                    origHight: Number(child.dataset.height),
-                    origWidth: Number(child.dataset.width)
-                })));
-                this.setSettings(options);
-                this.setParameters();
-                window.addEventListener("resize", (() => {
+        function initMasonry() {
+            const masonryActiveClassName = "masonryActive";
+            class Masonry {
+                constructor(attr, options) {
+                    this.container = attr;
+                    this.children = this.container.querySelectorAll("[data-iso-item]");
                     this.childrenData = Array.from(this.children).map((child => ({
                         child,
                         origHight: Number(child.dataset.height),
@@ -5940,66 +5933,73 @@ PERFORMANCE OF THIS SOFTWARE.
                     })));
                     this.setSettings(options);
                     this.setParameters();
-                }));
-            }
-            setSettings(options) {
-                const windowWidth = document.documentElement.clientWidth;
-                let gap = options.gap;
-                let columns = options.columns;
-                if (options.breakpoints) {
-                    let currentKey;
-                    for (const key in options.breakpoints) if (Number(key) < windowWidth) currentKey = key;
-                    if (currentKey) {
-                        gap = options.breakpoints[currentKey]?.gap || gap;
-                        columns = options.breakpoints[currentKey]?.columns || columns;
-                    }
+                    window.addEventListener("resize", (() => {
+                        this.childrenData = Array.from(this.children).map((child => ({
+                            child,
+                            origHight: Number(child.dataset.height),
+                            origWidth: Number(child.dataset.width)
+                        })));
+                        this.setSettings(options);
+                        this.setParameters();
+                    }));
                 }
-                this.settings = {
-                    gap: gap || 0,
-                    columns: columns || 3
-                };
-            }
-            setParameters() {
-                const containerWidth = this.container.offsetWidth;
-                const widthImage = (containerWidth - this.settings.gap * (this.settings.columns - 1)) / this.settings.columns;
-                this.childrenData = this.childrenData.map((child => ({
-                    ...child,
-                    currentWidth: widthImage,
-                    currentHeight: Math.floor(widthImage * child.origHight / child.origWidth)
-                })));
-                const heightColumns = new Array(this.settings.columns).fill(0);
-                const sizeColumns = new Array(this.settings.columns).fill(0);
-                this.childrenData.forEach(((child, i) => {
-                    heightColumns[i % this.settings.columns] += child.currentHeight + this.settings.gap;
-                    sizeColumns[i % this.settings.columns] += 1;
-                }));
-                const minHeightColumn = heightColumns.reduce(((acc, size) => size < acc ? size : acc));
-                const diffImages = heightColumns.map(((heightColumn, i) => (heightColumn - minHeightColumn) / sizeColumns[i]));
-                this.container.style.height = `${minHeightColumn - this.settings.gap}px`;
-                const topSets = new Array(this.settings.columns).fill(0);
-                this.childrenData = this.childrenData.map(((child, i) => {
-                    const indexColumn = i % this.settings.columns;
-                    const left = indexColumn * widthImage + this.settings.gap * indexColumn;
-                    const currentHeight = child.currentHeight - diffImages[indexColumn];
-                    const top = topSets[indexColumn];
-                    topSets[indexColumn] += currentHeight + this.settings.gap;
-                    return {
-                        ...child,
-                        currentHeight,
-                        left,
-                        top
+                setSettings(options) {
+                    const windowWidth = document.documentElement.clientWidth;
+                    let gap = options.gap;
+                    let columns = options.columns;
+                    if (options.breakpoints) {
+                        let currentKey;
+                        for (const key in options.breakpoints) if (Number(key) < windowWidth) currentKey = key;
+                        if (currentKey) {
+                            gap = options.breakpoints[currentKey]?.gap || gap;
+                            columns = options.breakpoints[currentKey]?.columns || columns;
+                        }
+                    }
+                    this.settings = {
+                        gap: gap || 0,
+                        columns: columns || 3
                     };
-                }));
-                this.childrenData.forEach((child => {
-                    child.child.style.top = `${child.top}px`;
-                    child.child.style.left = `${child.left}px`;
-                    child.child.style.width = `${child.currentWidth}px`;
-                    child.child.style.height = `${child.currentHeight}px`;
-                }));
-                this.container.classList.add(masonryActiveClassName);
+                }
+                setParameters() {
+                    const containerWidth = this.container.offsetWidth;
+                    const widthImage = (containerWidth - this.settings.gap * (this.settings.columns - 1)) / this.settings.columns;
+                    this.childrenData = this.childrenData.map((child => ({
+                        ...child,
+                        currentWidth: widthImage,
+                        currentHeight: Math.floor(widthImage * child.origHight / child.origWidth)
+                    })));
+                    const heightColumns = new Array(this.settings.columns).fill(0);
+                    const sizeColumns = new Array(this.settings.columns).fill(0);
+                    this.childrenData.forEach(((child, i) => {
+                        heightColumns[i % this.settings.columns] += child.currentHeight + this.settings.gap;
+                        sizeColumns[i % this.settings.columns] += 1;
+                    }));
+                    const minHeightColumn = heightColumns.reduce(((acc, size) => size < acc ? size : acc));
+                    const diffImages = heightColumns.map(((heightColumn, i) => (heightColumn - minHeightColumn) / sizeColumns[i]));
+                    this.container.style.height = `${minHeightColumn - this.settings.gap}px`;
+                    const topSets = new Array(this.settings.columns).fill(0);
+                    this.childrenData = this.childrenData.map(((child, i) => {
+                        const indexColumn = i % this.settings.columns;
+                        const left = indexColumn * widthImage + this.settings.gap * indexColumn;
+                        const currentHeight = child.currentHeight - diffImages[indexColumn];
+                        const top = topSets[indexColumn];
+                        topSets[indexColumn] += currentHeight + this.settings.gap;
+                        return {
+                            ...child,
+                            currentHeight,
+                            left,
+                            top
+                        };
+                    }));
+                    this.childrenData.forEach((child => {
+                        child.child.style.top = `${child.top}px`;
+                        child.child.style.left = `${child.left}px`;
+                        child.child.style.width = `${child.currentWidth}px`;
+                        child.child.style.height = `${child.currentHeight}px`;
+                    }));
+                    this.container.classList.add(masonryActiveClassName);
+                }
             }
-        }
-        document.addEventListener("DOMContentLoaded", (() => {
             const containers = document.querySelectorAll("[data-iso-items]");
             if (containers) containers.forEach((container => {
                 new Masonry(container, {
@@ -6017,6 +6017,18 @@ PERFORMANCE OF THIS SOFTWARE.
                     }
                 });
             }));
+        }
+        function initLikes() {
+            const button = document.querySelector(".likes__button");
+            if (button) button.addEventListener("click", (() => {
+                const isLiked = button.classList.contains("_liked");
+                button.classList.toggle("_liked");
+                if (isLiked) button.querySelector(".likes__count").textContent = Number(button.querySelector(".likes__count").textContent) - 1; else button.querySelector(".likes__count").textContent = Number(button.querySelector(".likes__count").textContent) + 1;
+            }));
+        }
+        document.addEventListener("DOMContentLoaded", (() => {
+            initMasonry();
+            initLikes();
         }));
         window["FLS"] = true;
         menuInit();

@@ -104,14 +104,15 @@
 			fill 0.3s;
 		@media (any-hover: hover) {
 			&:hover {
-				color: #8c0004;
 				fill: #8c0004;
+				.likes__count {
+					color: #8c0004;
+				}
 			}
 		}
 		&._liked {
 			color: #8c0004;
 			fill: #8c0004;
-			pointer-events: none;
 		}
 	}
 	&__icon {
